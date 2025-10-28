@@ -1,0 +1,46 @@
+data:
+  gdelt:
+    sample_path: data/artificial_articles.jsonl
+
+nlp:
+  ner:
+    model: xlm-roberta-large-finetuned-conll03-english
+    entity_types: [PER, ORG, LOC]
+    device: -1
+    aggregation_strategy: simple
+  embeddings:
+    model: sentence-transformers/paraphrase-xlm-r-multilingual-v1
+    device: null
+  similarity_threshold: 0.78
+  relation_strategy: cooccurrence
+  relation_type: MENTIONED_TOGETHER
+  relation_min_weight: 1.0
+  rebel:
+    model_name: Babelscape/rebel-large
+    device: null
+    max_length: 256
+    num_beams: 3
+    article_timeout: 30
+    min_sentence_length: 10
+
+analytics:
+  dashboard_metrics_path: artifacts/dashboard_metrics_synthetic.json
+  graph_snapshot_path: artifacts/graph_snapshot_synthetic.json
+
+graph: {}
+
+# Leave empty to skip Neo4j persistence during synthetic runs.
+
+
+gnn:
+  dataset_path: artifacts/pyg_graph_synthetic.pt
+  default_feature_dim: 64
+  hidden_channels: 128
+  out_channels: 64
+  dropout: 0.3
+  epochs: 10
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  device: cpu
+  val_ratio: 0.1
+  test_ratio: 0.1

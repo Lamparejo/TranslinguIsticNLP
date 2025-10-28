@@ -1,0 +1,57 @@
+data:
+  csv:
+    path: data/data_ing.csv
+    limit: 50
+    url_column_index: 4
+    article_id_column_index: 0
+    published_at_column_index: 1
+    preview_path: artifacts/articles_preview.jsonl
+    preview_limit: 50
+  gdelt:
+    sample_path: data/sample_articles.jsonl
+
+nlp:
+  ner:
+    model: xlm-roberta-large-finetuned-conll03-english
+    entity_types: [PER, ORG, LOC, MISC]
+    device: -1
+    aggregation_strategy: simple
+  embeddings:
+    model: sentence-transformers/paraphrase-xlm-r-multilingual-v1
+    device: null
+  similarity_threshold: 0.85
+  relation_strategy: rebel
+  relation_type: MENTIONED_TOGETHER
+  relation_min_weight: 1.0
+  rebel:
+    model_name: Babelscape/rebel-large
+    device: null
+    max_length: 512
+    num_beams: 3
+    article_timeout: 30
+    min_sentence_length: 100
+
+graph:
+  neo4j:
+    uri: bolt://localhost:7687
+    user: neo4j
+    password: changeit
+
+analytics:
+  dashboard_metrics_path: artifacts/dashboard_metrics.json
+  graph_snapshot_path: artifacts/graph_snapshot.json
+
+gnn:
+  dataset_path: artifacts/pyg_graph.pt
+  metrics_path: artifacts/gnn_training_metrics.json
+  model_artifact_path: artifacts/gnn_link_predictor.pt
+  default_feature_dim: 64
+  hidden_channels: 128
+  out_channels: 64
+  dropout: 0.3
+  epochs: 10
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  device: cpu
+  val_ratio: 0.1
+  test_ratio: 0.1
